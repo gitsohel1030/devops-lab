@@ -1,2 +1,2 @@
 Hellow World
-this is git practice session 
+this is demo text file
