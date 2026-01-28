@@ -1,16 +1,25 @@
+############################
+# Terraform
+############################
 
-# Terraform directories
+# Terraform working directory
 .terraform/
 
 # Terraform state files
-terraform.tfstate
-terraform.tfstate.backup
 *.tfstate
 *.tfstate.*
+*.tfstate.backup
+
+# Terraform plan files
+*.tfplan
 
 # Variable files (may contain secrets)
-#terraform.tfvars
-*#.tfvars
+*.tfvars
+!example.tfvars
+
+# Terraform CLI configuration
+.terraformrc
+terraform.rc
 
 # Override files
 override.tf
@@ -22,8 +31,18 @@ override.tf.json
 crash.log
 crash.*.log
 
-#
+############################
+# Editor & OS files
+############################
 
-*.tfstate
-*.tfstate.backup
-.terraform/
+# VS Code
+.vscode/
+
+# IntelliJ / PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
