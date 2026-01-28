@@ -2,10 +2,10 @@
 # Terraform
 ############################
 
-# Terraform working directory
+# Terraform working directory & provider cache
 .terraform/
 
-# Terraform state files
+# Terraform state files (ALWAYS ignore)
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
@@ -13,7 +13,7 @@
 # Terraform plan files
 *.tfplan
 
-# Variable files (may contain secrets)
+# Variable files (do NOT commit real values)
 *.tfvars
 !example.tfvars
 
