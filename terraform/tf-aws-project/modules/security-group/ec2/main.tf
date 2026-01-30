@@ -15,7 +15,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_from_alb_sg" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_egress_backend" {
-    security_group_id = aws_security_group.ec2_sg
+    security_group_id = aws_security_group.ec2_sg.id
     ip_protocol = "-1"
     cidr_ipv4 = var.egress_ipv4
   

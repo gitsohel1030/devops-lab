@@ -1,3 +1,7 @@
+
+# Deprecated Environment
+# This Environment used for testing purpose
+
 # ----------------------------
 # Network - VPC Module 
 # ----------------------------
@@ -6,7 +10,7 @@ module "vpc" {
 
   vpc_cidr    = var.vpc_cidr
   subnet_cidr = var.subnet_cidr
-  subnet_AZ   = var.subnet_AZ
+  subnet_AZ   = var.subnet_AZ[0]
   environment = var.environment
 }
 
@@ -16,11 +20,11 @@ module "vpc" {
 module "security_group" {
   source = "../../modules/security-group"
 
-  vpc_id_out       = module.vpc.vpc_id_out
-  ssh_cidr         = var.ssh_cidr
-  http_ipv4_cidr   = var.http_ipv4_cidr
-  egress_ipv4_cidr = var.egress_ipv4_cidr
-  environment      = var.environment
+  # vpc_id_out       = module.vpc.vpc_id_out        
+  # ssh_cidr         = var.ssh_cidr
+  # http_ipv4_cidr   = var.http_ipv4_cidr
+  # egress_ipv4_cidr = var.egress_ipv4_cidr
+  # environment      = var.environment
 
 }
 

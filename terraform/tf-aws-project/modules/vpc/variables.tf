@@ -18,5 +18,5 @@ variable "subnet_cidr" {
 
 variable "subnet_AZ" {
   description = "subnet availability zone"
-  type = string
+  type = tuple([string, string])
 }

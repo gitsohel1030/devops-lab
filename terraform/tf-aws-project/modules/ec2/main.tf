@@ -1,3 +1,10 @@
+# ===========================================================================================
+# Deprecated Module
+# This ec2 module was used in early phase
+# It is kept for reference and is no longer used by any environment
+# ===========================================================================================
+
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
