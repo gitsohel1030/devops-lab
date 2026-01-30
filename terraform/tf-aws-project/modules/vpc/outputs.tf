@@ -1,6 +1,6 @@
 output "vpc_id_out" {
   description = "Id of VPC"
-  value       = aws_vpc.tf-project-vpc.id
+  value       = aws_vpc.tf_project_vpc.id
 }
 
 

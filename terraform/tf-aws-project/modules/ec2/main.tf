@@ -21,8 +21,16 @@ resource "aws_instance" "project_ec2" {
   vpc_security_group_ids = [ var.sec_grp_id_out ]
   subnet_id = var.subnet_id_out   #already gave avalability zone in subnet
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = {
     Name = "tf_project_ec2"
   }
 }
+
+# resource "aws_instance" "Sonar-Server" {
+  # this was an existing resource tried and tested importing it into terraform state to manage via terraform 
+# }
 
