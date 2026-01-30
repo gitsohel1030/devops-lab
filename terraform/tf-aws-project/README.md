@@ -1,50 +1,52 @@
-# Terraform AWS Core Infrastructure
- 
-This repository contains a **production-grade Terraform infrastructure baseline** designed using **modular architecture, strict environment isolation, and security-first AWS networking principles**.
- 
-The project focuses on building a **scalable and extensible AWS platform layer** that can support modern workloads such as auto-scaled services, container platforms, and observability stacks.
- 
-The emphasis is on **correct design, safe evolution, and interview-ready clarity**, not on deploying applications.
+All backend compute runs in **private subnets** and is accessible **only through the ALB**.
  
 ---
  
-## 📌 What This Project Provisions
+## 🚀 What This Platform Provisions
  
-### Core Infrastructure
-- Custom Amazon VPC with planned CIDR ranges
-- Public subnets across availability zones
+### Networking
+- Custom VPC with planned CIDR ranges
+- Multiple **public subnets** across Availability Zones
+- Multiple **private subnets** across Availability Zones
 - Internet Gateway
-- Route tables and associations
-- Secure networking boundaries
+- Route tables and subnet associations
  
-### Platform Components
+### Traffic & Security
 - Application Load Balancer (ALB)
-- Target Groups with health checks
+- Target Group with health checks
 - HTTP Listener
-- Security groups with explicit trust relationships
+- Security groups with strict trust boundaries:
+  - Public ingress only to ALB
+  - Backend access only from ALB security group
  
-### Terraform Architecture
-- Fully modular design
+### Compute
+- Launch Templates (immutable instance definition)
+- Auto Scaling Group (self-healing backend compute)
+- EC2 instances launched dynamically by ASG
+- Instances distributed across Availability Zones
+ 
+### Terraform Design
+- Fully modular architecture
 - Environment-specific root modules
-- Remote state with locking (S3 + DynamoDB)
-- Explicit data flow using outputs and inputs
-- No hard-coded infrastructure values
+- Remote backend with locking (S3 + DynamoDB)
+- Explicit data flow using module outputs and inputs
+- No hardcoded infrastructure values
  
 ---
  
-## 🧠 Architectural Principles
+## 🧠 Design Principles
  
-This repository is built around the following principles:
+This platform is built using the following principles:
  
-- **Clear separation of responsibilities**
-- **One responsibility per module**
+- **Single responsibility per module**
 - **Root modules orchestrate, child modules implement**
 - **No cross-module lookups**
+- **Explicit dependencies via outputs and inputs**
+- **Immutable compute (Launch Template + ASG)**
+- **High Availability via multi-AZ design**
 - **Terraform state as the source of truth**
-- **Security groups define trust, not CIDRs**
-- **Infrastructure first, workloads later**
  
-Terraform is used to provision **platform infrastructure**, not application logic.
+Terraform is used to provision **infrastructure and platform layers**, not application logic.
  
 ---
  
@@ -55,9 +57,9 @@ terraform-aws-core/
 ├── modules/
 │   ├── vpc/                     # VPC, subnets, IGW, routing
 │   ├── security-group/
-│   │   ├── alb/                 # ALB security group (public entry)
+│   │   ├── alb/                 # ALB security group (public edge)
 │   │   └── ec2/                 # EC2 security group (backend)
-│   ├── alb/                     # ALB + Target Group + Listener
+│   ├── alb/                     # ALB, Target Group, Listener
 │   ├── launch-template/         # Immutable EC2 definition
 │   ├── asg/                     # Auto Scaling Group
 │   └── ec2/                     # Deprecated single-instance module
