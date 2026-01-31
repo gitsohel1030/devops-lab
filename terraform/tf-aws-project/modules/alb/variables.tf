@@ -10,9 +10,9 @@ variable "environment" {
   
 }
 
-variable "subnet_id_out" {
+variable "public_subnet_ids" {
     description = "subnet id"
-    type = string
+    type = list(string)
 }
 
 variable "target_port" {

@@ -14,16 +14,26 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "subnet_cidr" {
-  description = "declaring variable, subnet cidr block"
-  type        = string
+# variable "subnet_cidr" {
+#   description = "declaring variable, subnet cidr block"
+#   type        = string
+# }
+
+# variable "subnet_AZ" {
+#   description = "Declaring variable for, subnet availability zone"
+#   type = tuple([string, string])
+# }
+
+
+variable "public_subnets" {
+  description = "Map of AZ -> CIDR for public subnets"
+  type        = map(string)
 }
 
-variable "subnet_AZ" {
-  description = "Declaring variable for, subnet availability zone"
-  type = tuple([string, string])
+variable "private_subnets" {
+  description = "Map of AZ -> CIDR for private subnets"
+  type        = map(string)
 }
-
 
 # Security group variable - ALB SG
 

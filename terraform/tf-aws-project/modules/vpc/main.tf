@@ -1,34 +1,12 @@
 resource "aws_vpc" "tf_project_vpc" {
   cidr_block = var.vpc_cidr
 
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
   tags = {
     Name = "${var.environment}-vpc"
 }
-}
-
-# Public subnet for IGW
-resource "aws_subnet" "tf_project_subnet_public" {
-  vpc_id     = aws_vpc.tf_project_vpc.id
-  cidr_block = var.subnet_cidr
-  availability_zone = var.subnet_AZ[0]
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "${var.environment}-subnet"
-
-  }
-}
-
-# Private subnet for internal resources EC2, ASG, RDS
-resource "aws_subnet" "tf_pvt_subnet" {
-  vpc_id = aws_vpc.tf_project_vpc.id
-  cidr_block = var.subnet_cidr
-  availability_zone = var.subnet_AZ[1]
-  map_public_ip_on_launch = false
-
-  tags = {
-    "name" = "pvt-subnet"
-  }
 }
 
 # Internet Gateway
@@ -36,9 +14,24 @@ resource "aws_internet_gateway" "tf_igw" {
   vpc_id = aws_vpc.tf_project_vpc.id
 
   tags = {
-    Name = "tf_igw"
+    Name = "${var.environment}-tf_igw"
   }
 }
+
+# Public subnet for IGW
+resource "aws_subnet" "public" {
+  for_each = var.public_subnets
+  vpc_id = aws_vpc.tf_project_vpc.id
+  availability_zone = each.key
+  cidr_block = each.value
+  map_public_ip_on_launch = true
+
+  tags = merge(var.tags, {
+    Name = "${var.environment}-public-${each.key}"
+    Tier = "public"
+  })
+}
+
 
 # public route table
 resource "aws_route_table" "public_rt" {
@@ -51,23 +44,44 @@ resource "aws_route_table" "public_rt" {
 }
 
 resource "aws_route_table_association" "public_association" {
-  subnet_id = aws_subnet.tf_project_subnet_public.id
+  for_each = aws_subnet.public
+  subnet_id = each.value.id
   route_table_id = aws_route_table.public_rt.id
   
 }
 
 
+# Private subnet for internal resources EC2, ASG, RDS
+resource "aws_subnet" "private" {
+  for_each = var.private_subnets
+  vpc_id = aws_vpc.tf_project_vpc.id
+  availability_zone = each.key
+  cidr_block = each.value
+  map_public_ip_on_launch = false
+
+  
+tags = merge(var.tags, {
+    Name = "${var.environment}-private-${each.key}"
+    Tier = "private"
+  })
+
+}
+
+
+
 # Private route table
 resource "aws_route_table" "private_rt" {
+  for_each = var.private_subnets
   vpc_id = aws_vpc.tf_project_vpc.id
 
-  tags = {
-    Name = "private-rt"
-  }
+  tags     = merge(var.tags, { 
+    Name = "${var.environment}-private-rt-${each.key}" 
+    })
 }
 
 resource "aws_route_table_association" "pvt_association" {
-  subnet_id = aws_subnet.tf_pvt_subnet.id
-  route_table_id = aws_route_table.private_rt.id
+  for_each       = var.private_subnets
+  subnet_id = aws_subnet.private[each.key].id
+  route_table_id = aws_route_table.private_rt[each.key].id
   
 }

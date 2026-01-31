@@ -3,7 +3,7 @@ resource "aws_lb" "tf-project-alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg_id]
-  subnets = [var.subnet_id_out]
+  subnets = var.public_subnet_ids
 
   tags = {
     environment = var.environment
@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "tf-project-tg" {
   health_check {
     protocol = "HTTP"
     path = "/"
-    matcher = "200"
+    matcher = "200-399"
     interval = 30
     timeout = 5
     healthy_threshold = 2

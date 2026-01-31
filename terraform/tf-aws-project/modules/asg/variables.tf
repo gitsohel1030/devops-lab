@@ -18,9 +18,9 @@ variable "max_size" {
   type = number
 }
 
-variable "private_subnet_id" {
+variable "private_subnet_ids" {
   description = "private subnet id for asg"
-  type = string
+  type = list(string)
 }
 
 variable "target-group-arn" {

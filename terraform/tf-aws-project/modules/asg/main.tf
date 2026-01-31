@@ -4,7 +4,7 @@ resource "aws_autoscaling_group" "tf_asg" {
   min_size = var.min_size
   max_size = var.max_size
 
-  vpc_zone_identifier = [var.private_subnet_id]
+  vpc_zone_identifier = var.private_subnet_ids
   target_group_arns = [var.target-group-arn]
 
   launch_template {
