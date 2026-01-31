@@ -68,7 +68,6 @@ tags = merge(var.tags, {
 }
 
 
-
 # Private route table
 resource "aws_route_table" "private_rt" {
   for_each = var.private_subnets
@@ -84,4 +83,43 @@ resource "aws_route_table_association" "pvt_association" {
   subnet_id = aws_subnet.private[each.key].id
   route_table_id = aws_route_table.private_rt[each.key].id
   
+}
+
+######################################
+# NAT Gateway
+######################################
+
+# Ealstic IP
+
+resource "aws_eip" "eip" {
+  for_each = var.public_subnets
+  domain = "vpc"
+
+  tags = {
+    Name = "${var.environment}-nat-eip-${each.key}"
+  }
+
+  depends_on = [aws_internet_gateway.tf_igw]
+}
+
+
+# NAT Gateway
+resource "aws_nat_gateway" "tf_nat" {
+  for_each = var.public_subnets
+  allocation_id = aws_eip.eip[each.key].id
+  subnet_id     = aws_subnet.public[each.key].id
+
+  tags = {
+    Name = "gw NAT"
+  }
+
+  depends_on = [aws_internet_gateway.tf_igw]
+}
+
+
+resource "aws_route" "private_default" {
+  for_each = var.private_subnets
+  route_table_id = aws_route_table.private_rt[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.tf_nat[each.key].id
 }
