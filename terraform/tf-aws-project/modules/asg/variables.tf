@@ -38,5 +38,15 @@ variable "lt_version" {
   type = string
 }
 
+variable "enable_scaling" {
+  description = "enable scaling true/false"
+  type = bool
+  default = true
+}
 
+variable "target_cpu_utilization" {
+  description = "Target cpu utilization percent number only"
+  type = number
+  default = 40
+}
 

@@ -15,3 +15,13 @@ output "target-group-arn" {
     description = "target group arn for ASG attachment"  
 }
 
+output "target_group_arn_suffix" {
+  value = aws_lb_target_group.tf-project-tg.arn_suffix
+  description = "alb tg arn suffix"
+}
+
+output "alb_name" {
+  value = aws_lb.tf-project-alb.name
+  description = "name of alb"
+}
+

@@ -83,7 +83,7 @@ module "launch_template" {
   ec2_sg_id     = module.security_group.ec2_sg_id
   ami_id        = data.aws_ami.ubuntu.id
   name          = "tf_lt"
-  user_data = base64encode(file("${path.module}/user_data.sh"))
+  user_data     = base64encode(file("${path.module}/user_data.sh"))
 }
 
 
@@ -102,4 +102,16 @@ module "asg" {
   target-group-arn   = module.alb.target-group-arn
   private_subnet_ids = module.vpc.private_subnet_ids
   name               = var.name
+}
+
+
+# ----------------------------
+# CloudWatch - Monitoring Module 
+# ----------------------------
+
+module "monitoring" {
+  source                  = "../../modules/monitoring"
+  asg_name                = module.asg.asg_name
+  alb_name                = module.alb.alb_name
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
 }
