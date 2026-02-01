@@ -14,7 +14,7 @@
 *.tfplan
 
 # Variable files (do NOT commit real values)
-*.tfvars
+# *.tfvars
 !example.tfvars
 
 # Terraform CLI configuration
