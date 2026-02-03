@@ -73,12 +73,6 @@ pipeline {
         //     }
         // }
 
-        // stage('Manual Approval') {
-        //     steps {
-        //         input message: "Are you sure you want to execute traaform plan?"
-        //     }
-        // }
-
         stage('Terraform Plan') {
             steps {
                 dir("${REPO_PATH}/${TF_ENV}") {
@@ -86,11 +80,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Manual Approval') {
+            steps {
+                input message: "Are you sure you want to execute traaform plan?"
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir("${REPO_PATH}/${TF_ENV}") {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "Terraform init, fmt, and plan completed successfully."
+            echo "Terraform init, fmt, and plan completed successfully, and infrastructure deployed successfully"
         }
         failure {
             echo "Terraform pipeline failed. Check logs."
