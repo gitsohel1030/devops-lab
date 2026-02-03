@@ -81,7 +81,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                dir("${TF_ENV}") {
+                dir("${REPO_PATH}/${TF_ENV}") {
                     sh 'terraform plan -out=tfplan'
                 }
             }
