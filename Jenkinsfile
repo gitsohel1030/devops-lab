@@ -38,7 +38,7 @@ pipeline {
         stage('Terraform Format Check') {
             steps {
                 dir("${TF_ENV}") {
-                    sh 'terraform fmt -recursive no-color'
+                    sh 'terraform fmt -recursive -no-color'
                 }
             }
         }
