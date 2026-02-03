@@ -73,11 +73,11 @@ pipeline {
         //     }
         // }
 
-        stage('Manual Approval') {
-            steps {
-                input message: "Are you sure you want to execute traaform plan?"
-            }
-        }
+        // stage('Manual Approval') {
+        //     steps {
+        //         input message: "Are you sure you want to execute traaform plan?"
+        //     }
+        // }
 
         stage('Terraform Plan') {
             steps {
