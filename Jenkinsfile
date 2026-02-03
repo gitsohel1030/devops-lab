@@ -30,7 +30,7 @@ pipeline {
         
         stage('Cleanup TF Cache') {
             steps {
-                dir("${TF_BASE}/envs/${TF_ENV}") {
+                dir("${TF_ENV}") {
                 sh '''
                     rm -rf .terraform .terraform.lock.hcl
                     echo "Cleaned previous Terraform backend cache"
