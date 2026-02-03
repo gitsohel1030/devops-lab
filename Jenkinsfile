@@ -11,7 +11,8 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = "ap-south-1"
-        TF_ENV = "terraform/tf-aws-project/envs/prod"
+        REPO_PATH = "terraform/tf-aws-project/envs"
+        TF_ENV = "prod"
     }
 
     options {
@@ -30,9 +31,9 @@ pipeline {
         
         stage('Cleanup TF Cache') {
             steps {
-                dir("${TF_ENV}") {
+                dir("${REPO_PATH}/${TF_ENV}") {
                 sh '''
-                    rm -rf .terraform .terraform.lock.hcl
+                    rm -rf .terraform 
                     echo "Cleaned previous Terraform backend cache"
                 '''
                 }
@@ -42,7 +43,7 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir("${TF_ENV}") {
+                dir("${REPO_PATH}/${TF_ENV}") {
                     sh 'terraform init'
                 }
             }
@@ -50,7 +51,7 @@ pipeline {
 
         stage('Terraform Format Check') {
             steps {
-                dir("${TF_ENV}") {
+                dir("${REPO_PATH}/${TF_ENV}") {
                     sh 'terraform fmt -recursive -no-color'
                 }
             }
@@ -58,7 +59,7 @@ pipeline {
 
         stage('Terraform Validate') {
             steps {
-                dir("${TF_ENV}") {
+                dir("${REPO_PATH}/${TF_ENV}") {
                     sh 'terraform validate'
                 }
             }
