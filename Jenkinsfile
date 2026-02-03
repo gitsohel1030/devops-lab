@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = "ap-south-1"
-        TF_ENV = "dev"
+        TF_ENV = "devops-lab"
     }
 
     options {
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir("envs/${TF_ENV}") {
+                dir("${TF_ENV}") {
                     sh 'terraform init'
                 }
             }
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Terraform Format Check') {
             steps {
-                dir("envs/${TF_ENV}") {
+                dir("${TF_ENV}") {
                     sh 'terraform fmt -check -recursive'
                 }
             }
@@ -45,7 +45,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                dir("envs/${TF_ENV}") {
+                dir("${TF_ENV}") {
                     sh 'terraform plan'
                 }
             }
