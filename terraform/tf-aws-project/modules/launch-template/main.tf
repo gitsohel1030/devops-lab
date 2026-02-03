@@ -30,7 +30,7 @@ resource "aws_launch_template" "tf_launch_template" {
 
     metadata_options {
       http_tokens = "required"
-      http_endpoint = ["enabled"]
+      http_endpoint = "enabled"
     }
   
 }
