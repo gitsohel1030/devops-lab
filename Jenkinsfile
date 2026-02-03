@@ -65,13 +65,13 @@ pipeline {
             }
         }
 
-        // stage('Iac Security Scans') {
-        //     steps {
-        //         dir("${TF_ENV}") {
-        //             sh 'tfsec .'
-        //         }
-        //     }
-        // }
+        stage('Iac Security Scans') {
+            steps {
+                dir("${TF_ENV}") {
+                    sh 'tfsec .'
+                }
+            }
+        }
 
         stage('Terraform Plan') {
             steps {

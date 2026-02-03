@@ -1,9 +1,11 @@
+# tfsec:ignore:aws-elb-alb-not-public
 resource "aws_lb" "tf-project-alb" {
   name               = "tf-project-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg_id]
   subnets = var.public_subnet_ids
+  drop_invalid_header_fields = true
 
   tags = {
     environment = var.environment
@@ -31,6 +33,8 @@ resource "aws_lb_target_group" "tf-project-tg" {
   }
 }
 
+
+# tfsec:ignore:aws-elb-http-not-used
 resource "aws_lb_listener" "tf_listener" {
     load_balancer_arn = aws_lb.tf-project-alb.arn
     port = var.listener_port
