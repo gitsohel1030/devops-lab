@@ -29,25 +29,25 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir("${TF_ENV}") {
+                // dir("${TF_ENV}") {
                     sh 'terraform init'
-                }
+                // }
             }
         }
 
         stage('Terraform Format Check') {
             steps {
-                dir("${TF_ENV}") {
+                // dir("${TF_ENV}") {
                     sh 'terraform fmt -check -recursive'
-                }
+                // }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                dir("${TF_ENV}") {
+                // dir("${TF_ENV}") {
                     sh 'terraform plan'
-                }
+                // }
             }
         }
     }
