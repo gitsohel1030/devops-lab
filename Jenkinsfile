@@ -67,7 +67,7 @@ pipeline {
         stage('Iac Security Scans') {
             steps {
                 dir("${TF_ENV}") {
-                    sh 'tfsec'
+                    sh 'tfsec .'
                 }
             }
         }
@@ -81,7 +81,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 dir("${TF_ENV}") {
-                    sh 'terraform plan'
+                    sh 'terraform plan -out=tfplan'
                 }
             }
         }
