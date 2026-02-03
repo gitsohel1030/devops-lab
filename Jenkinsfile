@@ -56,6 +56,28 @@ pipeline {
             }
         }
 
+        stage('Terraform Validate') {
+            steps {
+                dir("${TF_ENV}") {
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Iac Security Scans') {
+            steps {
+                dir("${TF_ENV}") {
+                    sh 'tfsec'
+                }
+            }
+        }
+
+        stage('Manual Approval') {
+            steps {
+                input message: "Are you sure you want to execute traaform plan?"
+            }
+        }
+
         stage('Terraform Plan') {
             steps {
                 dir("${TF_ENV}") {
