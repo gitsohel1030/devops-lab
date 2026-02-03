@@ -10,7 +10,7 @@ module "vpc" {
   private_subnets = var.private_subnets
 }
 
-# ----------------------------
+# -----------------------------------
 # Security - SG Module 
 # ----------------------------
 
