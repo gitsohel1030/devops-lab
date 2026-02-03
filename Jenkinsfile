@@ -27,6 +27,19 @@ pipeline {
             }
         }
 
+        
+        stage('Cleanup TF Cache') {
+            steps {
+                dir("${TF_BASE}/envs/${TF_ENV}") {
+                sh '''
+                    rm -rf .terraform .terraform.lock.hcl
+                    echo "Cleaned previous Terraform backend cache"
+                '''
+                }
+            }
+        }
+
+
         stage('Terraform Init') {
             steps {
                 dir("${TF_ENV}") {
@@ -59,5 +72,10 @@ pipeline {
         failure {
             echo "Terraform pipeline failed. Check logs."
         }
+        
+        always {
+            cleanWs()   // cleans the entire workspace after each run
+        }
+
     }
 }
