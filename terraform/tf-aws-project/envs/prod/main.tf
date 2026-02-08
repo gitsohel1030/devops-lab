@@ -79,11 +79,12 @@ data "aws_ami" "ubuntu" {
 module "launch_template" {
   source = "../../modules/launch-template"
 
-  instance_type = var.instance_type
-  ec2_sg_id     = module.security_group.ec2_sg_id
-  ami_id        = data.aws_ami.ubuntu.id
-  name          = "tf_lt"
-  user_data     = base64encode(file("${path.module}/user_data.sh"))
+  instance_type         = var.instance_type
+  ec2_sg_id             = module.security_group.ec2_sg_id
+  ami_id                = data.aws_ami.ubuntu.id
+  instance_profile_name = aws_iam_instance_profile.ec2_ssm_profile.name
+  name                  = "tf_lt"
+  user_data             = base64encode(file("${path.module}/user_data.sh"))
 }
 
 

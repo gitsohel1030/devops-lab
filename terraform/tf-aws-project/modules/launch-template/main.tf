@@ -4,6 +4,10 @@ resource "aws_launch_template" "tf_launch_template" {
     image_id = var.ami_id
     instance_type = var.instance_type
 
+    iam_instance_profile {
+      name = var.instance_profile_name
+    }
+
     vpc_security_group_ids = [var.ec2_sg_id]
 
     user_data = var.user_data

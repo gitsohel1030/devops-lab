@@ -28,3 +28,8 @@ variable "name" {
     default = "tf_lt"
   
 }
+
+variable "instance_profile_name" {
+  description = "IAM instance profile for ec2"
+  type = string
+}
